@@ -41,4 +41,4 @@ All projects were developed in my dedicated home lab environment using real-worl
 
 ---
 
-### [Connect with me on LinkedIn](MY_LINKEDIN_URL) 
+### [Connect with me on LinkedIn](www.linkedin.com/in/daniel-osei-4a074a164) 

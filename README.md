@@ -7,11 +7,19 @@
 ## 📖 Overview
 Welcome to my primary project repository. This collection documents my progression from foundational SOC analysis to advanced Threat Hunting and AI-driven security automation.
 
-All projects here are conducted in a **Home Lab Environment** (Dell AIO / VMware ESXi) using real-world datasets and simulated attack scenarios.
+---
+
+## 🏗️ Lab Infrastructure
+Before diving into the projects, view the **Client-Server Architecture** used to build this cyber range.
+👉 **[View the Full Lab Documentation](./00_Lab_Infrastructure/README.md)**
+
+* **Server:** Dell OptiPlex 7440 AIO (ESXi 8.0 Type-1 Hypervisor)
+* **Storage:** 2TB Dedicated Datastore for VMs
+* **Management:** MacBook Pro M2 (via Static IP `10.0.0.10`)
 
 ---
 
-## 🏗️ Project Structure
+## 📂 Project Structure
 
 This repository is organized into three distinct evolutionary phases:
 
@@ -39,17 +47,9 @@ This repository is organized into three distinct evolutionary phases:
 
 | Project Name | Tech Stack | Type | Status |
 | :--- | :--- | :--- | :--- |
-| **SYN Flood Analysis** | Wireshark, Python | Traffic Analysis | ✅ Complete |
-| **Splunk C2 Hunt** | Splunk, Sysmon | Threat Hunting | 🚧 In Progress |
-| **Bayesian Alert Triage** | Jupyter, Pandas | Data Science | 📝 Planned |
-
----
-
-## ⚙️ Lab Infrastructure used in this Repo
-
-* **Hypervisor:** VMware ESXi 7.0
-* **Analysis:** Splunk Enterprise (Free License), JupyterHub
-* **Targets:** Metasploitable, Windows 10, Ubuntu Server
+| **[Lab Setup & Architecture](./00_Lab_Infrastructure/README.md)** | VMware ESXi, Dell AIO | Infrastructure | ✅ Complete |
+| **SYN Flood Analysis** | Wireshark, Python | Traffic Analysis | 🚧 In Progress |
+| **Splunk C2 Hunt** | Splunk, Sysmon | Threat Hunting | 📝 Planned |
 
 ---
 

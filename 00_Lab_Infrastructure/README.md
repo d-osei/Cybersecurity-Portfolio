@@ -36,7 +36,7 @@ graph TD
 
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style F fill:#ccf,stroke:#333,stroke-width:2px
-
+```
 ---
 
 ## 2. ⚙️ Tools and Hardware
@@ -59,11 +59,17 @@ The installation of the ESXi hypervisor presented a key technical challenge. Sta
 **The Failure:**
 I initially attempted to use `balenaEtcher` to flash the ISO. However, it failed to create a partition table that the Dell BIOS could recognize as a bootable device.
 
-![Etcher Error](./images/etcher_error.png) *Figure 1: BalenaEtcher warning regarding the missing partition table.*
+<img src="./images/etcher_error.png" alt="Etcher Error" width="550"> 
+<i>Figure 1: BalenaEtcher warning regarding the missing partition table.</i>
+
+---
 
 Upon inspecting the disk after the failed attempt, `diskutil` confirmed that the partition scheme was essentially unrecognizable to the legacy BIOS boot mode required for this server.
 
-![Diskutil Check](./images/diskutil_list.png) *Figure 2: Verifying the drive state using diskutil*.
+<img src="./images/diskutil_list.png" alt="Diskutil Check" width="700"> 
+<i>Figure 2: Verifying the drive state using diskutil.</i>
+
+---
 
 ### 3.2 The Solution: Native Terminal Formatting
 To resolve this, I bypassed GUI tools and utilized macOS native terminal utilities to manually structure the drive with an **MBR (Master Boot Record)** partition map and **FAT32** file system.
@@ -71,8 +77,10 @@ To resolve this, I bypassed GUI tools and utilized macOS native terminal utiliti
 **Step 1: Formatting and Partitioning**
 ```bash
 diskutil eraseDisk MS-DOS "ESXI" MBR disk4
+```
+<img src="./images/diskutil_format_mbr_fat32.png" alt="Formatting" width="700">
 
-![Formatting](./images/diskutil_format_mbr_fat32.png)
+---
 
 **Step 2: Marking Partition as Active via fdisk** 
 Using `fdisk` was critical to flag the partition as bootable for the legacy BIOS.
@@ -81,43 +89,61 @@ sudo fdisk -e /dev/disk4
 > f 1    # Flag partition 1 as active
 > write  # Write changes to table
 > quit
+```
+<img src="./images/fdisk_mark_partition_active.png" alt="Fdisk Active" width="700">
 
-![Fdisk Active](./images/fdisk_mark_partition_active.png)
-
+---
 **Step 3: Mounting and Copying Files** 
 With the drive prepared, I mounted the VMware installer ISO and manually copied the contents to the USB drive.
 ```bash
 hdiutil attach VMware-VMvisor-Installer-8.0U3e-24677879.x86_64.iso
 cp -Rv /Volumes/ESXI-8.0U3E-24677879-STANDARD/* /Volumes/ESXI/
+```
+<img src="./images/hdiutil_mount_iso.png" alt="Mounting ISO" width="700"> <img src="./images/cp_iso_files_to_usb.png" alt="Coping Files" width="700">
 
-![Mounting ISO](./images/hdiutil_mount_iso.png) ![Copying Files](./images/cp_iso_files_to_usb.png)
+---
 
 ### 3.3 Boot Configuration Edit
 To ensure the bootloader could locate the kernel on this specific hardware, I had to edit the `isolinux.cfg` file.
 ```bash
 cd /Volumes/ESXI
 nano isolinux.cfg
+```
+<img src="./images/cd_to_esxi_folder.png" alt="ESXI Directory" width="700"> <img src="./images/nano_isolinux_cfg_original.png" alt="Nano Edit" width="700">
 
-![ESXI directory](./images/cd_to_esxi_folder.png) ![Nano Edit](./images/nano_isolinux_cfg_original.png)
+---
 
 I modified the `APPEND` line to include `-p 1`. This flag helps the installer identify the correct partition for the bootbank, preventing "Bank not found" errors during the install process.
 
-![Config Edit](./images/nano_isolinux_cfg_edited_line.png) *Figure 3: Appending the partition flag to the boot config*.
+<img src="./images/nano_isolinux_cfg_edited_line.png" alt="Config Edit" width="700"> 
+<i>Figure 3: Appending the partition flag to the boot config.</i>
 
-![Final Config](./images/cat_isolinux_cfg.png) *Figure 4: Verification of the edited config file*.
+---
+
+<img src="./images/cat_isolinux_cfg.png" alt="Final Config" width="700"> 
+<i>Figure 4: Verification of the edited config file.</i>
+
+---
 
 ### 3.4 Post-Install Configuration (DCUI)
 Once the hypervisor was installed, I accessed the **Direct Console User Interface (DCUI)** directly on the Dell AIO to configure the management network.
 
-![DCUI](./images/esxi_dcui_console_success_screen.png) *Figure 5: Accessing the Network Management Console on the physical server*.
+<img src="./images/esxi_dcui_console_success_screen.png" alt="DCUI" width="600"> 
+<i>Figure 5: Accessing the Network Management Console on the physical server.</i>
+
+---
 
 **Static IP Configuration**: To ensure reliable remote management, I disabled DHCP and assigned a static IP address `(10.0.0.10)` that resides outside my router's DHCP pool but within the local subnet.
 
-![IPv4 Configuration](./images/esxi_dcui_ipv4_static_config.png) *Figure 6: Manually assigning the Static IP and Subnet Mask*.
+<img src="./images/esxi_dcui_ipv4_static_config.png" alt="IPv4 Configuration" width="600"> 
+<i>Figure 6: Manually assigning the Static IP and Subnet Mask.</i>
+
+---
 
 **DNS and Hostname**: I configured the Primary DNS to point to the local gateway and the Alternate DNS to Google `(8.8.8.8)` for external resolution.
 
-![DNS Setting](./images/esxi_dcui_dns_config.png) *Figure 7: Finalizing DNS settings*.
+<img src="./images/esxi_dcui_dns_config.png" alt="DNS Setting" width="600"> 
+<i>Figure 7: Finalizing DNS settings.</i>
 
 ---
 
@@ -131,13 +157,14 @@ The Dell AIO is now fully operational as a "headless" hypervisor.
 
  2. **Storage**: The custom `datastore_vm_storage` (the 2TB external SSD) is mounted and ready for VM deployment.
 
-![Web Client Success](./images/safari_esxi_web_client.png) *Figure 7: The VMware ESXi Host Client running in Safari on macOS, showing the successfully mounted datastores*.
+<img src="./images/safari_esxi_web_client.png" alt="Web Client Success" width="850"> 
+<i>Figure 7: The VMware ESXi Host Client running in Safari on macOS, showing the successfully mounted datastores.</i>
 
 ---
 
 ## ⏭️ Next Steps
 
-. **Security Onion**: Deploying the NSM (Network Security Monitoring) sensor.
-. **Kali Linux**: Configuring the attack box.
-. **Attack Simulation**: Running the first "live fire" exercise.
+* **Security Onion**: Deploying the NSM (Network Security Monitoring) sensor.
+* **Kali Linux**: Configuring the attack box.
+* **Attack Simulation**: Running the first "live fire" exercise.
 

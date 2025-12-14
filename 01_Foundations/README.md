@@ -27,7 +27,7 @@ The goal of Phase 1 is to master the core technical skills required for a **Tier
 * **Deliverable:** A Wireshark investigation identifying the TCP "Three-Way Handshake" violation and calculating the attack rate.
 * **Status:** 🚧 *In Progress*
 
-### 2. [SSH Brute Force Investigation](./Log_Analysis)
+### 2. [SSH Brute Force Investigation](./Log_Analysis/SSH-Bruteforce-Analysis/)
 * **Infrastructure:** `Kali-Attacker` (Hydra) ➔ `Ubuntu-Splunk` (SSH Service).
 * **Scenario:** A simulated credential stuffing attack against the Splunk server.
 * **Deliverable:** Analysis of `/var/log/auth.log` using `grep` and `awk` to isolate the attacker's IP and frequency.

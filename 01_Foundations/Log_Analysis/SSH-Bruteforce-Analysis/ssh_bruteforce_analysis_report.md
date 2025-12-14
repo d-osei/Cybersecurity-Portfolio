@@ -16,6 +16,8 @@ This project simulates an internal threat scenario where an adversary (Red Team)
 * **SIEM:** Splunk Enterprise, configured to monitor `/var/log/auth.log`.
 * **Network:** `LAN_Isolated` (Air-gapped from production home network).
 ---
+
+```mermaid
 graph TD
     %% Define the Network Boundary
     subgraph LAN_Isolated ["☁️ LAN_Isolated (Air-gapped / 172.16.10.x)"]
@@ -48,6 +50,7 @@ graph TD
     class Hydra tool;
     class OS_Auth log;
     class Splunk siem;
+```
 
 ---
 
@@ -87,8 +90,8 @@ source="/var/log/auth.log" "Failed password"
 | stats count by attacker_ip, target_user
 | sort - count
 ```
-<div align="center">
-    <img src="./images/failed_logins.png" width="600px" />
+<div align="left">
+    <img src="./images/failed_logins.png" width="800px" />
 </div>
 
 ### C. CLI Forensics (The Manual Way)
@@ -103,8 +106,8 @@ grep "Failed password" /var/log/auth.log* | awk '{print $(NF-3)}' | sort | uniq 
 * `awk '{print $(NF-3)}'`: Extracted the IP address (located 4 fields.
   from the end of the line).
 * `uniq -c`: Aggregated the count of unique IPs.
-<div align="center">
-    <img src="./images/cli_forensics.png" width="600xp" />
+<div align="left">
+    <img src="./images/cli_forensics.png" width="800px" />
 </div>
 
 **Forensic Output:**
@@ -115,8 +118,8 @@ grep "Failed password" /var/log/auth.log* | awk '{print $(NF-3)}' | sort | uniq 
 
 ### D. Visualization
 I created a dashboard panel to track the volume of failed attempts by source IP, providing immediate visibility into the attack vector.
-<div align="center" >
-    <img src="./images/top_ip_failed_logins.png" width="600px" />
+<div align="left" >
+    <img src="./images/top_ip_failed_logins.png" width="800px" /><br />
     <em>Figure 1: The SIEM(Splunk Enterprise) Reveals the Attacker </em>
 </div>
 
@@ -128,8 +131,8 @@ I created a dashboard panel to track the volume of failed attempts by source IP,
 Splunk detected a spike of **16+ failed authentication attempts** occurring within a 45-second window. All attempts originated from the internal IP `172.16.10.102` and targeted the `analyst` user account.
 <table>
     <tr>
-        <td><b>SIEM(Splunk) Analysis</b><br/><img src="./images/siem_findings.png" width="400" /></td>
-        <td><b>CLI Forensics</b><br /><img src="./images/cli_forensics.png" width="400" /></td>
+        <td><b>SIEM(Splunk) Analysis</b><br/><img src="./images/siem_findings.png" width="600px" /></td>
+        <td><b>CLI Forensics</b><br /><img src="./images/cli_forensics.png" width="600px" /></td>
     </tr>
 </table>
 

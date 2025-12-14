@@ -206,7 +206,9 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Added These Personally
+# Ignore Mac System Files
 .DS_Store
+
+# Ignore Python Cache
 venv
 gitignore

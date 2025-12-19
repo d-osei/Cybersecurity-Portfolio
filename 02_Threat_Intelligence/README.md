@@ -21,12 +21,12 @@ The goal of Phase 2 is to advance to **Tier 2/3 Analyst** capabilities. Moving b
 
 ## 📂 Project Modules
 
-### 1. [Splunk C2 Beacon Detection](./Splunk_C2_Hunt)
-* **Scenario:** A compromised host is "beaconing" out to a Command & Control server.
-* **Deliverable:** A Splunk Threat Hunt report identifying the heartbeat pattern and the malicious payload.
-* **Status:** 📝 *Planned*
+### 1. [Incident Response Case Study: "I'm Really Not Batman" (Botsv1)](./Threat-Hunting-BOTSv1/Incident-Report.md)
+* **Scenario:** A corporate web server (`imreallynotbatman.com`) is targeted by an adversary. The attack escalates from automated reconnaissance and brute-force credential theft to the installation of a PHP web shell and the execution of a Trojanized binary for website defacement.
+* **Deliverable:** A comprehensive incident report mapped to the **MITRE ATT&CK** framework, featuring **Splunk SPL** queries for detection across Network (Suricata), Web (Stream:HTTP), and Endpoint (Sysmon) logs.
+* **Status:** Completed
 
-### 2. [Lateral Movement Investigation](./Lateral_Movement)
+### 2. [Lateral Movement Investigation](./)
 * **Scenario:** An attacker moving from the DMZ to the Internal Network.
 * **Deliverable:** Tracing the attack path using Windows Event ID 4624 (Logon) and Sysmon Event ID 1 (Process Create).
-* **Status:** 📝 *Planned*
+* **Status:** Planned
